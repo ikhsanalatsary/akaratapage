@@ -7,12 +7,12 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   startProjectHeader: {
-    id: 'boilerplate.containers.HomePage.start_project.header',
-    defaultMessage: 'Start your next react project in seconds',
+    id: 'boilerplate.containers.HomePage.title.header',
+    defaultMessage: 'Akarata',
   },
   startProjectMessage: {
-    id: 'boilerplate.containers.HomePage.start_project.message',
-    defaultMessage: 'A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices',
+    id: 'boilerplate.containers.HomePage.desc.message',
+    defaultMessage: 'Pustaka JavaScript untuk mengambil kata dasar pada bahasa Indonesia.',
   },
   trymeHeader: {
     id: 'boilerplate.containers.HomePage.tryme.header',

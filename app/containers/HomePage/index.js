@@ -9,6 +9,7 @@ import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import styled from 'styled-components';
 
 import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
 import H2 from 'components/H2';
@@ -22,6 +23,10 @@ import messages from './messages';
 import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
 import { makeSelectUsername } from './selectors';
+
+const Badges = styled.a`
+  margin-right: 10px;
+`;
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   /**
@@ -46,7 +51,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         <Helmet
           title="Home Page"
           meta={[
-            { name: 'description', content: 'A React.js Boilerplate application homepage' },
+            { name: 'description', content: 'Akarata, Pustaka JavaScript untuk mengambil kata dasar pada bahasa Indonesia.' },
           ]}
         />
         <div>
@@ -57,6 +62,15 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             <p>
               <FormattedMessage {...messages.startProjectMessage} />
             </p>
+            <Badges href="https://codeclimate.com/github/ikhsanalatsary/akarata">
+              <img src="https://codeclimate.com/github/ikhsanalatsary/akarata/badges/gpa.svg" role="presentation" />
+            </Badges>
+            <Badges href="https://codeclimate.com/github/ikhsanalatsary/akarata/coverage">
+              <img src="https://codeclimate.com/github/ikhsanalatsary/akarata/badges/coverage.svg" role="presentation" />
+            </Badges>
+            <Badges href="https://travis-ci.org/ikhsanalatsary/akarata">
+              <img src="https://travis-ci.org/ikhsanalatsary/akarata.svg?branch=master" role="presentation" />
+            </Badges>
           </CenteredSection>
           <Section>
             <H2>
