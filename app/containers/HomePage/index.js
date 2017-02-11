@@ -7,44 +7,54 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
+import akarata from 'akarata';
 
-import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
 import H2 from 'components/H2';
-import ReposList from 'components/ReposList';
-import AtPrefix from './AtPrefix';
+import A from 'components/A';
+import StyledButton from 'components/Button/StyledButton';
+import ListStem from 'components/ListStem';
 import CenteredSection from './CenteredSection';
 import Form from './Form';
-import Input from './Input';
+import Textarea from './Textarea';
 import Section from './Section';
 import messages from './messages';
-import { loadRepos } from '../App/actions';
-import { changeUsername } from './actions';
-import { makeSelectUsername } from './selectors';
 
 const Badges = styled.a`
   margin-right: 10px;
 `;
 
+const Desc = styled.p`
+  color: #999;
+`;
+
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  /**
-   * when initial state username is not null, submit the form to load repos
-   */
-  componentDidMount() {
-    if (this.props.username && this.props.username.trim().length > 0) {
-      this.props.onSubmitForm();
+  state = {
+    kata: '',
+    stem: '',
+  }
+
+  onChangeStem = (evt) => this.setState({ kata: evt.target.value });
+  onSubmitForm = (evt) => {
+    if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+    const kata = this.state.kata.replace(/[,.]/g, '').trim().toLowerCase();
+    if (kata.length > 20) {
+      const arrayKata = kata.split(' ');
+      const newStemArray = arrayKata.map((teks) => akarata.stem(teks));
+      this.setState({ stem: newStemArray });
+    } else {
+      const stem = akarata.stem(kata);
+      this.setState({ stem });
     }
+  }
+  getText = () => {
+    const contoh = document.getElementsByClassName('contoh');
+    this.setState({ kata: contoh[0].text });
+    return false; // to avoid scroll to top
   }
 
   render() {
-    const { loading, error, repos } = this.props;
-    const reposListProps = {
-      loading,
-      error,
-      repos,
-    };
+    // const contohCepat = 'Pernikahan bernuansa alam juga terlihat dari pilihan hiasan yang disediakan vendor. Terlihat perpaduan nuansa bunga, daun, dan kayu dalam pameran ini.';
 
     return (
       <article>
@@ -59,39 +69,71 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             <H2>
               <FormattedMessage {...messages.startProjectHeader} />
             </H2>
-            <p>
+            <Desc>
               <FormattedMessage {...messages.startProjectMessage} />
-            </p>
-            <Badges href="https://codeclimate.com/github/ikhsanalatsary/akarata">
+            </Desc>
+            <Badges href="https://codeclimate.com/github/ikhsanalatsary/akarata" title="code review status">
               <img src="https://codeclimate.com/github/ikhsanalatsary/akarata/badges/gpa.svg" role="presentation" />
             </Badges>
-            <Badges href="https://codeclimate.com/github/ikhsanalatsary/akarata/coverage">
+            <Badges href="https://codeclimate.com/github/ikhsanalatsary/akarata/coverage" title="coverage status">
               <img src="https://codeclimate.com/github/ikhsanalatsary/akarata/badges/coverage.svg" role="presentation" />
             </Badges>
-            <Badges href="https://travis-ci.org/ikhsanalatsary/akarata">
+            <Badges href="https://travis-ci.org/ikhsanalatsary/akarata" title="test status">
               <img src="https://travis-ci.org/ikhsanalatsary/akarata.svg?branch=master" role="presentation" />
+            </Badges>
+            <Badges href="https://david-dm.org/ikhsanalatsary/akarata" title="dependencies status">
+              <img src="https://david-dm.org/ikhsanalatsary/akarata.svg" role="presentation" />
             </Badges>
           </CenteredSection>
           <Section>
             <H2>
-              <FormattedMessage {...messages.trymeHeader} />
+              <FormattedMessage {...messages.stemmingTitle} />
             </H2>
-            <Form onSubmit={this.props.onSubmitForm}>
-              <label htmlFor="username">
-                <FormattedMessage {...messages.trymeMessage} />
-                <AtPrefix>
-                  <FormattedMessage {...messages.trymeAtPrefix} />
-                </AtPrefix>
-                <Input
-                  id="username"
-                  type="text"
-                  placeholder="mxstbr"
-                  value={this.props.username}
-                  onChange={this.props.onChangeUsername}
-                />
+            <p>
+              <FormattedMessage {...messages.stemmingDesc} />
+            </p>
+            <ul>
+              <li>
+                <FormattedMessage {...messages.contohPertama} />
+              </li>
+              <li>
+                <FormattedMessage {...messages.contohKedua} />
+              </li>
+            </ul>
+          </Section>
+          <Section>
+            <H2>
+              <FormattedMessage {...messages.cobaSayaHeader} />
+            </H2>
+            <Form onSubmit={this.onSubmitForm}>
+              <label htmlFor="akarata">
+                <FormattedMessage {...messages.cobaSayaMessage} />
               </label>
+              <Textarea
+                id="akarata"
+                type="text"
+                placeholder="Belajar"
+                value={this.state.kata}
+                onChange={this.onChangeStem}
+                required
+              />
+              <StyledButton type="submit">
+                Stem
+              </StyledButton>
             </Form>
-            <ReposList {...reposListProps} />
+            {this.state.stem.length > 0 && <ListStem stemming={this.state.stem} />}
+          </Section>
+          <Section>
+            <H2>
+              Contoh cepat
+            </H2>
+            <ul>
+              <li>
+                <A href="#" onClick={this.getText} className="contoh">
+                  Pernikahan bernuansa alam juga terlihat dari pilihan hiasan yang disediakan vendor. Terlihat perpaduan nuansa bunga, daun, dan kayu dalam pameran ini.
+                </A>
+              </li>
+            </ul>
           </Section>
         </div>
       </article>
@@ -99,37 +141,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
 }
 
-HomePage.propTypes = {
-  loading: React.PropTypes.bool,
-  error: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.bool,
-  ]),
-  repos: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.bool,
-  ]),
-  onSubmitForm: React.PropTypes.func,
-  username: React.PropTypes.string,
-  onChangeUsername: React.PropTypes.func,
-};
+HomePage.propTypes = {};
 
-export function mapDispatchToProps(dispatch) {
-  return {
-    onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
-    onSubmitForm: (evt) => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadRepos());
-    },
-  };
-}
-
-const mapStateToProps = createStructuredSelector({
-  repos: makeSelectRepos(),
-  username: makeSelectUsername(),
-  loading: makeSelectLoading(),
-  error: makeSelectError(),
-});
-
-// Wrap the component to inject dispatch and state into it
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default HomePage;

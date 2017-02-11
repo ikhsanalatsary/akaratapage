@@ -12,6 +12,7 @@ import styled from 'styled-components';
 
 import Footer from 'components/Footer';
 import withProgressBar from 'components/ProgressBar';
+import LinkGit from 'components/LinkGit';
 
 const AppWrapper = styled.div`
   max-width: calc(768px + 16px * 2);
@@ -26,13 +27,14 @@ export function App(props) {
   return (
     <AppWrapper>
       <Helmet
-        titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="React.js Boilerplate"
+        titleTemplate="%s - Akarata"
+        defaultTitle="Akarata"
         meta={[
-          { name: 'description', content: 'A React.js Boilerplate application' },
+          { name: 'description', content: 'Akarata, Pustaka JavaScript untuk mengambil akar kata dari kata berimbuhan pada bahasa Indonesia.' },
         ]}
       />
       {React.Children.toArray(props.children)}
+      <LinkGit />
       <Footer />
     </AppWrapper>
   );
