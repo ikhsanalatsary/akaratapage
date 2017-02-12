@@ -10,6 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import akarata from 'akarata';
 
+import H1 from 'components/H1';
 import H2 from 'components/H2';
 import A from 'components/A';
 import StyledButton from 'components/Button/StyledButton';
@@ -61,28 +62,28 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         <Helmet
           title="Home Page"
           meta={[
-            { name: 'description', content: 'Akarata, Pustaka JavaScript untuk mengambil kata dasar pada bahasa Indonesia.' },
+            { name: 'description', content: 'Akarata, Pustaka JavaScript untuk mengambil kata dasar dari kata berimbuhan pada bahasa Indonesia.' },
           ]}
         />
         <div>
           <CenteredSection>
-            <H2>
+            <H1>
               <FormattedMessage {...messages.startProjectHeader} />
-            </H2>
+            </H1>
             <Desc>
               <FormattedMessage {...messages.startProjectMessage} />
             </Desc>
             <Badges href="https://codeclimate.com/github/ikhsanalatsary/akarata" title="code review status">
-              <img src="https://codeclimate.com/github/ikhsanalatsary/akarata/badges/gpa.svg" role="presentation" />
+              <img src="https://codeclimate.com/github/ikhsanalatsary/akarata/badges/gpa.svg" alt="codeclimate" role="presentation" />
             </Badges>
             <Badges href="https://codeclimate.com/github/ikhsanalatsary/akarata/coverage" title="coverage status">
-              <img src="https://codeclimate.com/github/ikhsanalatsary/akarata/badges/coverage.svg" role="presentation" />
+              <img src="https://codeclimate.com/github/ikhsanalatsary/akarata/badges/coverage.svg" alt="coverage" role="presentation" />
             </Badges>
             <Badges href="https://travis-ci.org/ikhsanalatsary/akarata" title="test status">
-              <img src="https://travis-ci.org/ikhsanalatsary/akarata.svg?branch=master" role="presentation" />
+              <img src="https://travis-ci.org/ikhsanalatsary/akarata.svg?branch=master" alt="travisci" role="presentation" />
             </Badges>
             <Badges href="https://david-dm.org/ikhsanalatsary/akarata" title="dependencies status">
-              <img src="https://david-dm.org/ikhsanalatsary/akarata.svg" role="presentation" />
+              <img src="https://david-dm.org/ikhsanalatsary/akarata.svg" alt="depedencies status" role="presentation" />
             </Badges>
           </CenteredSection>
           <Section>
